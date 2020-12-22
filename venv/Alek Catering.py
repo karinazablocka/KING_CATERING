@@ -8,9 +8,12 @@ import folium
 import pandas
 from geopy.geocoders import ArcGIS
 
+from datetime import datetime
+
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///catering.db'
 db=SQLAlchemy(app)
+
 
 
 ### TWORZENIE TABEL W BAZIE DANYCH catering.db (tabela tabela_danie z daniami i cenami utworzona oddzialenie "menu_creating_db.py")
@@ -31,8 +34,8 @@ class Data_klient(db.Model):
 
 ##  TABELA "data" Z DANYMI Z Formularza Kontaktowego ZE STRONY /Kontakt/
 
-class Data(db.Model):
-    __tablename__="data"
+class Data_wiadomosc(db.Model):
+    __tablename__="tabela_wiadomosc"
     id = db.Column('Id', db.Integer(), primary_key=True)
     imie_ = db.Column('Imie i nazwisko', db.String(255), nullable=False)
     email_ = db.Column('Email', db.String(255), nullable=False)
@@ -51,26 +54,14 @@ class Data(db.Model):
 class Data_zamowienie(db.Model):
     __tablename__="tabela_zamowienie"
     id_zamowienie = db.Column('Id', db.Integer(), primary_key=True)
-    miasto_zamowienie = db.Column('Miasto', db.String(255), nullable=False)
-    kod_zamowienie = db.Column('Kod pocztowy', db.String(255), nullable=False)
-    ulica_zamowienie = db.Column('Ulica', db.String(255), nullable=False)
-    nr_budynku_zamowienie = db.Column('Nr budynku', db.Integer())
-    nr_mieszkania_zamowienie = db.Column('Nr mieszkania', db.Integer())
-    name_zamowienie = db.Column('Imie i nazwisko', db.String(255), nullable=False)
-    tel_zamowienie = db.Column('Telefon', db.Integer())
-    email_zamowienie = db.Column('Email', db.String(255), nullable=False)
+    data_zamowienie = db.Column('Data utworzenia', db.String(255))
+    id_klient = db.Column('Id klienta', db.Integer())
+    id_adres_dostawy = db.Column('Id adres dostawy', db.Integer())
 
-    def __init__(self, miasto_zamowienie, kod_zamowienie, ulica_zamowienie, nr_budynku_zamowienie, 
-                 nr_mieszkania_zamowienie, name_zamowienie, tel_zamowienie, email_zamowienie  ):
-        self.miasto_zamowienie=miasto_zamowienie
-        self.kod_zamowienie=kod_zamowienie
-        self.ulica_zamowienie=ulica_zamowienie
-        self.nr_budynku_zamowienie=nr_budynku_zamowienie
-        self.nr_mieszkania_zamowienie=nr_mieszkania_zamowienie
-        self.name_zamowienie=name_zamowienie
-        self.tel_zamowienie=tel_zamowienie
-        self.email_zamowienie=email_zamowienie
-
+    def __init__(self, data_zamowienie, id_klient):
+        self.data_zamowienie = data_zamowienie
+        self.id_klient = id_klient
+        self.id_adres_dostawy = id_adres_dostawy
 
 ##  TABELA "zamowienie_danie" Z DANYMI Z Formularza Zamówienia ZE STRONY /Zamowienie/ z zamówionymi daniami
 
@@ -86,6 +77,24 @@ class Data_zamowienie_danie(db.Model):
         self.id_menu=id_menu
         self.liczba_sztuk=liczba_sztuk
 
+##  TABELA "tabela_zamowienie" Z DANYMI adresowymi Z Formularza Zamówienia ZE STRONY /Zamowienie/
+
+class Data_adres_dostawy(db.Model):
+    __tablename__="tabela_adres_dostawy"
+    id_adres_dostawy = db.Column('Id', db.Integer(), primary_key=True)
+    miasto_adres_dostawy = db.Column('Miasto', db.String(255), nullable=False)
+    kod_adres_dostawy = db.Column('Kod pocztowy', db.String(255), nullable=False)
+    ulica_adres_dostawy = db.Column('Ulica', db.String(255), nullable=False)
+    nr_budynku_adres_dostawy = db.Column('Nr budynku', db.Integer())
+    nr_mieszkania_adres_dostawy = db.Column('Nr mieszkania', db.Integer())
+
+    def __init__(self, miasto_adres_dostawy, kod_adres_dostawy, ulica_adres_dostawy, nr_budynku_adres_dostawy,
+                 nr_mieszkania_adres_dostawy):
+        self.miasto_adres_dostawy=miasto_adres_dostawy
+        self.kod_adres_dostawy=kod_adres_dostawy
+        self.ulica_adres_dostawy=ulica_adres_dostawy
+        self.nr_budynku_adres_dostawy=nr_budynku_adres_dostawy
+        self.nr_mieszkania_adres_dostawy=nr_mieszkania_adres_dostawy
 
 ### CO ZAWIERA SIĘ NA POSZCZEGÓLNYCH STRONACH
 
@@ -207,16 +216,21 @@ def Dziekuje_za_wiadomosc():
         tel = request.form["tel_name"]
         wiadomosc = request.form["wiadomosc_name"]
         print(name, email, tel, wiadomosc)
-        data=Data(name, email, tel, wiadomosc)
-        db.session.add(data)
+        tabela_wiadomosc=Data_wiadomosc(name, email, tel, wiadomosc)
+        db.session.add(tabela_wiadomosc)
         db.session.commit()
         return render_template("Dziekuje_za_wiadomosc.html")
 
 ##  STRONA Dziekuje_za_zamowienie.html - Co dzieje się po naciśnięciu przycisku na Zamowienie.html
 @app.route('/Dziekuje_za_zamowienie', methods=['POST'])
 def Dziekuje_za_zamowienie():
-#   ZBIERANIE DANYCH ADRESOWYCH I ZAPISANIE ICH DO TABELI "zamówienie"
+#   ZBIERANIE DANYCH ADRESOWYCH I
+    now = datetime.now()
+    formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+
     if request.method == 'POST':
+        data_zamowienie = formatted_date
+
         miasto_zamowienie = request.form["miasto_zamowienie"]
         kod_zamowienie = request.form["kod_zamowienie"]
         ulica_zamowienie = request.form["ulica_zamowienie"]
@@ -226,34 +240,60 @@ def Dziekuje_za_zamowienie():
         tel_zamowienie = request.form["tel_zamowienie"]
         email_zamowienie = request.form["email_zamowienie"]
 
-        tabela_zamowienie = Data_zamowienie(miasto_zamowienie, kod_zamowienie, ulica_zamowienie,
-                               nr_budynku_zamowienie, nr_mieszkania_zamowienie, name_zamowienie,
-                               tel_zamowienie, email_zamowienie)
-        db.session.add(tabela_zamowienie)
+#   ZAPISANIE DANYCH DO TABELI "tabela_adres_dostawy"
+
+        tabela_adres_dostawy = Data_adres_dostawy(miasto_zamowienie, kod_zamowienie,
+                                            ulica_zamowienie,nr_budynku_zamowienie, nr_mieszkania_zamowienie)
+        db.session.add(tabela_adres_dostawy)
         db.session.commit()
 
+
 #   ZAPISANIE DANYCH KIENTA DO TABELI "tabela_klient"
-        if db.session.query(Data_klient).filter(Data_klient.email_klient==email_zamowienie).count() == 0:
+        if db.session.query(Data_klient).filter(Data_klient.email_klient == email_zamowienie).count() == 0:
             tabela_klient = Data_klient(name_zamowienie,
-                                 tel_zamowienie, email_zamowienie)
+                                        tel_zamowienie, email_zamowienie)
             db.session.add(tabela_klient)
             db.session.commit()
+
+        con = sqlite3.connect("catering.db")
+        cur = con.cursor()
+        con.row_factory = sqlite3.Row
+        sql_query = "SELECT Id FROM tabela_klient WHERE Email = '%s'" % (email_zamowienie)
+        cur.execute(sql_query)
+        print(sql_query)
+        id_klient = cur.fetchall();
+        id_klient = id_klient[0][0]
+        print(id_klient)
+        con.commit()
+
+        con = sqlite3.connect("catering.db")
+        cur = con.cursor()
+        con.row_factory = sqlite3.Row
+        cur.execute("SELECT Id FROM tabela_adres_dostawy ORDER BY Id DESC LIMIT 1")
+        id_adres_dostawy = cur.fetchall();
+        con.commit()
+
+#   ZAPISANIE DANYCH DO TABELI "tabela_zamowienie"
+
+        tabela_zamowienie = Data_zamowienie(data_zamowienie, id_klient, id_adres_dostawy)
+        db.session.add(tabela_zamowienie)
+        db.session.commit()
 
 #   ZBIERANIE DANYCH Z ZAMÓWIONYMI DANIAMI I ZAPISANIE ICH DO TABELI "zamowienie_danie"
 #   ZAPISANIE KTÓRE DANIA (CHECKBOXES) ZOSTAŁY ZAZNACZONE
     if request.method == 'POST':
         dania = (request.form.getlist('dania'))
-    print(dania)
+    # print(dania)
 
 #   ZAPISANIE ILE SZTUK DAŃ PRZY ZAZNACZONYCH CHECKBOXES ZOSTAŁO ZAMÓWIONE
     b=[]
     for danie in dania:
         for key, val in request.form.items():
-            print(key)
-            print("DANIA:")
-            print(dania)
-            print("KEY:")
-            print(key)
+            # print(key)
+            # print("DANIA:")
+            # print(dania)
+            # print("KEY:")
+            # print(key)
             if (key == ("liczba_sztuk"+danie)) and val != "":
                 b.append((danie, val))
 

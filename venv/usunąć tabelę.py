@@ -3,9 +3,9 @@ import sqlite3
 conn = sqlite3.connect('catering.db')
 
 cur = conn.cursor()
-cur.execute('''DROP table zamowienie''')
+cur.execute('''DROP table data''')
 
-records = cur.execute("SELECT * FROM zamowienie")
+records = cur.execute("SELECT * FROM data")
 
 for record in records:
     print(record)
