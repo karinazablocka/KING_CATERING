@@ -3,15 +3,9 @@ import sqlite3
 conn = sqlite3.connect('catering.db')
 
 cur = conn.cursor()
-cur.execute('''DROP table menu''')
+cur.execute('''DROP table zamowienie''')
 
-# dania = [(1, 'schabowy', 23.5),
-#         (2, 'spagetti', 15),
-#         (3, 'ogórkowa', 8)]
-#
-# cur.executemany('INSERT INTO menu VALUES (?,?,?)', dania)
-
-records = cur.execute("SELECT * FROM menu")
+records = cur.execute("SELECT * FROM zamowienie")
 
 for record in records:
     print(record)

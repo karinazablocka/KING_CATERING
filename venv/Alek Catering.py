@@ -19,7 +19,7 @@ db=SQLAlchemy(app)
 
 class Data_klient(db.Model):
     __tablename__="tabela_klient"
-    id_zamowienie = db.Column('Id', db.Integer(), primary_key=True)
+    id_klient = db.Column('Id', db.Integer(), primary_key=True)
     name_klient = db.Column('Imie i nazwisko', db.String(255), nullable=False)
     tel_klient = db.Column('Telefon', db.Integer())
     email_klient = db.Column('Email', db.String(255), nullable=False, unique=True)
@@ -46,10 +46,10 @@ class Data(db.Model):
         self.wiadomosc_=wiadomosc_
 
 
-##  TABELA "zamowienie" Z DANYMI adresowymi Z Formularza Zamówienia ZE STRONY /Zamowienie/
+##  TABELA "tabela_zamowienie" Z DANYMI adresowymi Z Formularza Zamówienia ZE STRONY /Zamowienie/
 
 class Data_zamowienie(db.Model):
-    __tablename__="zamowienie"
+    __tablename__="tabela_zamowienie"
     id_zamowienie = db.Column('Id', db.Integer(), primary_key=True)
     miasto_zamowienie = db.Column('Miasto', db.String(255), nullable=False)
     kod_zamowienie = db.Column('Kod pocztowy', db.String(255), nullable=False)
@@ -226,11 +226,18 @@ def Dziekuje_za_zamowienie():
         tel_zamowienie = request.form["tel_zamowienie"]
         email_zamowienie = request.form["email_zamowienie"]
 
-        zamowienie = Data_zamowienie(miasto_zamowienie, kod_zamowienie, ulica_zamowienie,
+        tabela_zamowienie = Data_zamowienie(miasto_zamowienie, kod_zamowienie, ulica_zamowienie,
                                nr_budynku_zamowienie, nr_mieszkania_zamowienie, name_zamowienie,
                                tel_zamowienie, email_zamowienie)
-        db.session.add(zamowienie)
+        db.session.add(tabela_zamowienie)
         db.session.commit()
+
+#   ZAPISANIE DANYCH KIENTA DO TABELI "tabela_klient"
+        if db.session.query(Data_klient).filter(Data_klient.email_klient==email_zamowienie).count() == 0:
+            tabela_klient = Data_klient(name_zamowienie,
+                                 tel_zamowienie, email_zamowienie)
+            db.session.add(tabela_klient)
+            db.session.commit()
 
 #   ZBIERANIE DANYCH Z ZAMÓWIONYMI DANIAMI I ZAPISANIE ICH DO TABELI "zamowienie_danie"
 #   ZAPISANIE KTÓRE DANIA (CHECKBOXES) ZOSTAŁY ZAZNACZONE
@@ -250,11 +257,11 @@ def Dziekuje_za_zamowienie():
             if (key == ("liczba_sztuk"+danie)) and val != "":
                 b.append((danie, val))
 
-#   WYDOBYCIE Z TABELI "zamowienie" OSTATNIEGO ID ABY PRZYPORZĄDKOWAĆ DANIA I ICH LICZBĘ DO KONKRETNEGO ZAMÓWIENIA
+#   WYDOBYCIE Z TABELI "tabela_zamowienie" OSTATNIEGO ID ABY PRZYPORZĄDKOWAĆ DANIA I ICH LICZBĘ DO KONKRETNEGO ZAMÓWIENIA
         con = sqlite3.connect("catering.db")
         cur = con.cursor()
         con.row_factory = sqlite3.Row
-        cur.execute("SELECT Id FROM zamowienie ORDER BY Id DESC LIMIT 1")
+        cur.execute("SELECT Id FROM tabela_zamowienie ORDER BY Id DESC LIMIT 1")
         id_zamowienie = cur.fetchall();
         con.commit()
 
