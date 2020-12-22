@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <title>Alek Catering</title>
+    <head>
+        <link href="../static/main_zamowienie.css" rel="stylesheet">
+    </head>
+        <body>
+            <div class="container">
+                <strong><nav>
+                        <ul class="menu">
+                            <li><a href="{{ url_for('home') }}">Home</a></li>
+                            <li><a href="{{ url_for('Zamowienie') }}">Zamówienie</a></li>
+                            <li><a href="{{ url_for('Map_Catering') }}">Mapa dostaw</a></li>
+                            <li><a href="{{ url_for('Kontakt') }}">Kontakt</a></li>
+                        </ul>
+                    </nav></strong>
+                <h1>Formularz zamówienia</h1>
+                <h3>Dziękujemy, że nas wybraliście. Proszę złożyć zamówienie.</h3>
+                <form action={{url_for("Dziekuje_za_zamowienie")}} method="POST">
+                    <input class="miasto" title="Proszę o wpisanie miasta" placeholder="Miasto" type="text" name="miasto_zamowienie" >
+                    <input class="kod" title="Proszę o wpisanie kodu pocztowego" placeholder="Kod pocztowy" type="text" name="kod_zamowienie" > <br>
+                    <input class="miasto" title="Proszę o wpisanie ulicy" placeholder="Ulica" type="text" name="ulica_zamowienie" >
+                    <input class="nr" title="Proszę o wpisanie nr budynku" placeholder="Nr budynku" type="number" name="nr_budynku_zamowienie" >
+                    <input class="nr" title="Proszę o wpisanie nr mieszkania" placeholder="Nr mieszkania" type="number" name="nr_mieszkania_zamowienie" > <br>
+                    <!--<input class="button" type="submit" title="Sprawdź czy dowozimy pod wskazany adres" value="Sprawdź dostępność"> <br>-->
+                    <input class="imie" title="Proszę o wpisanie swojego imienia i nazwiska" placeholder="Imię i nazwisko" type="text" name="name_zamowienie" >
+                    <input class="imie" title="Proszę o wpisanie swojego nr telefonu" placeholder="Telefon" type="tel" name="tel_zamowienie"> <br>
+                    <input class="email" title="Proszę o wpisanie swojego adresu email" placeholder="Adres email" type="email" name="email_zamowienie" > <br><br><br>
+
+                <h3>NAPOJE</h3>
+                    {% for row in napoje %}
+                        <tr>
+                           <td>{{row["id"]}}</td>
+                           <td>{{row["nazwa"]}}</td>
+                           <td> {{row["cena"]}} zł</td>
+                           <td> <input type="checkbox" name="dania" id={{row["id"]}} value={{row["id"]}}>&nbsp;</td>
+                           <td> <input class="nr" title="Proszę podać liczbę sztuk" placeholder="Liczba sztuk" type="number" name="liczba_sztuk{{row.id}}" id={{row["id"]}}></td><br>
+                        </tr>
+                    {% endfor %}
+
+                <h3>ZUPY</h3>
+
+                    {% for row in zupy %}
+                        <tr>
+                           <td>{{row["id"]}}</td>
+                           <td>{{row["nazwa"]}}</td>
+                           <td> {{row["cena"]}} zł</td>
+                           <td> <input type="checkbox" name="dania" id={{row["id"]}} value={{row["id"]}}>&nbsp;</td>
+                           <td> <input class="nr" title="Proszę podać liczbę sztuk" placeholder="Liczba sztuk" type="number" name="liczba_sztuk{{row.id}}" id={{row["id"]}}></td><br>
+                        </tr>
+                    {% endfor %}
+
+                <h3>POTRAWY</h3>
+
+                    {% for row in potrawy %}
+                        <tr>
+                           <td>{{row["id"]}}</td>
+                           <td>{{row["nazwa"]}}</td>
+                           <td> {{row["cena"]}} zł</td>
+                           <td> <input type="checkbox" name="dania" id={{row["id"]}} value={{row["id"]}}>&nbsp;</td>
+                           <td> <input class="nr" title="Proszę podać liczbę sztuk" placeholder="Liczba sztuk" type="number" name="liczba_sztuk{{row.id}}" id={{row["id"]}}></td><br>
+                        </tr>
+                    {% endfor %}
+
+                <h3>DODATKI</h3>
+
+                    {% for row in dodatki %}
+                        <tr>
+                           <td>{{row["id"]}}</td>
+                           <td>{{row["nazwa"]}}</td>
+                           <td> {{row["cena"]}} zł</td>
+                           <td> <input type="checkbox" name="dania" id={{row["id"]}} value={{row["id"]}}>&nbsp;</td>
+                           <td> <input class="nr" title="Proszę podać liczbę sztuk" placeholder="Liczba sztuk" type="number" name="liczba_sztuk{{row.id}}" id={{row["id"]}}></td><br>
+                        </tr>
+                    {% endfor %}
+
+                    <input class="button" type="submit" title="Złóż zamówienie" value="Złóż zamówienie"> <br>
+                </form>
+            </div>
+        </body>
+</html>
+
+
+

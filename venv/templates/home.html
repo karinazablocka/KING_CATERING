@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <title>Alek Catering</title>
+    <head>
+        <link href="../static/main.css" rel="stylesheet">
+    </head>
+        <body>
+            <div class="container">
+                <strong><nav>
+                        <ul class="menu">
+                            <li><a href="{{ url_for('home') }}">Home</a></li>
+                            <li><a href="{{ url_for('Zamowienie') }}">Zamówienie</a></li>
+                            <li><a href="{{ url_for('Map_Catering') }}">Mapa dostaw</a></li>
+                            <li><a href="{{ url_for('Kontakt') }}">Kontakt</a></li>
+                        </ul>
+                    </nav></strong>
+                <h1>Alek Catering</h1>
+                <h3>Dziękujemy, że nas wybraliście.</h3>
+            </div>
+            <div> 
+                <img src="{{url_for('static', filename='2.jpg')}}" align="middle" />
+                <div class="teaserboxxs ">
+                    <div class="teasertextxs">
+                        <p>
+                            <strong>
+                                <a href="/Zamowienie/">Złóż zamówienie</a>
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </body>
+</html>

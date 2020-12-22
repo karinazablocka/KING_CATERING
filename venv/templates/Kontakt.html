@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <title>Alek Catering</title>
+    <head>
+        <link href="../static/main.css" rel="stylesheet">
+    </head>
+        <body>
+            <div class="container">
+                <strong><nav>
+                        <ul class="menu">
+                            <li><a href="{{ url_for('home') }}">Home</a></li>
+                            <li><a href="{{ url_for('Zamowienie') }}">Zamówienie</a></li>
+                            <li><a href="{{ url_for('Map_Catering') }}">Mapa dostaw</a></li>
+                            <li><a href="{{ url_for('Kontakt') }}">Kontakt</a></li>
+                        </ul>
+                    </nav></strong>
+                <h1>Kontakt</h1>
+                <h3>Formularz kontaktowy</h3>
+                <form action={{url_for("Dziekuje_za_wiadomosc")}} method="POST">
+                    <input class="imie" title="Proszę o wpisanie swojego imienia i nazwiska" placeholder="Imię i nazwisko" type="text" name="name_name" required> <br>
+                    <input class="email" title="Proszę o wpisanie swojego adresu email" placeholder="Email" type="email" name="email_name" required>
+                    <input class="email" title="Proszę o wpisanie swojego nr telefonu" placeholder="Telefon" type="tel" name="tel_name"> <br>
+                    <textarea class="wiadomosc" title="Proszę o wpisanie wiadomości" placeholder="Wiadomość" type="text" name="wiadomosc_name" required> </textarea> <br>
+                    <button class="button" type="submit"> Wyślij</button>
+                </form>
+            </div>
+        </body>
+</html>

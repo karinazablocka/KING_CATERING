@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<head>
+    <link href="../static/main_zamowienie.css" rel="stylesheet">
+</head>
+
+<head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+
+    <body>
+            <div class="container">
+                <strong><nav>
+                        <ul class="menu">
+                            <li><a href="{{ url_for('home') }}">Home</a></li>
+                            <li><a href="{{ url_for('Zamowienie') }}">Zamówienie</a></li>
+                            <li><a href="{{ url_for('Map_Catering') }}">Mapa dostaw</a></li>
+                            <li><a href="{{ url_for('Kontakt') }}">Kontakt</a></li>
+                        </ul>
+                </nav></strong>
+                 <form action={{url_for("Dziekuje_mapa")}} method="POST">
+                    <input class="imie" title="Proszę o wpisanie swojego adresu" placeholder="Miejscowość, ulica nr domu/nr mieszkania" type="text" name="map_adres">
+                    <button class="button" type="submit">Sprawdź adres</button>
+                 </form>
+            </div>
+    </body>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_bf3c2536cd904d01970ecc5d22a14b26 {
+                    position: center;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+<!--</head>-->
+    <body>
+    
+            <div class="folium-map" id="map_bf3c2536cd904d01970ecc5d22a14b26" ></div>
+        
+    </body>
+    <script>
+
+                var map_bf3c2536cd904d01970ecc5d22a14b26 = L.map(
+                    "map_bf3c2536cd904d01970ecc5d22a14b26",
+                    {
+                        center: [51.41665, 21.96931],
+                        crs: L.CRS.EPSG3857,
+                        zoom: 13,
+                        zoomControl: true,
+                        preferCanvas: false,
+                    }
+                );
+
+
+
+
+
+                var tile_layer_61d0bc5d8c494f198f776f4c25caaf60 = L.tileLayer(
+                    "https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg",
+                    {"attribution": "Map tiles by \u003ca href=\"http://stamen.com\"\u003eStamen Design\u003c/a\u003e, under \u003ca href=\"http://creativecommons.org/licenses/by/3.0\"\u003eCC BY 3.0\u003c/a\u003e. Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://creativecommons.org/licenses/by-sa/3.0\"\u003eCC BY SA\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+                ).addTo(map_bf3c2536cd904d01970ecc5d22a14b26);
+
+
+                var feature_group_fb4cfa5883ca4496ac374e519f3cfa10 = L.featureGroup(
+                    {}
+                ).addTo(map_bf3c2536cd904d01970ecc5d22a14b26);
+
+
+                var circle_marker_c8a49c92179648a1bbf6104f2b3f33b7 = L.circleMarker(
+                    [51.41665, 21.96931],
+                    {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "black", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+                ).addTo(feature_group_fb4cfa5883ca4496ac374e519f3cfa10);
+
+
+            var popup_a70911133b614d97b763d9abd6b3bacd = L.popup({"maxWidth": "100%"});
+
+
+                var i_frame_b099dc5b68da4bcd9b558ccfd9a7c74e = $(`<iframe src="data:text/html;charset=utf-8;base64,CiAgICBTaWVkemliYSBmaXJteQ==" width="200" style="border:none !important;" height="100"></iframe>`)[0];
+                popup_a70911133b614d97b763d9abd6b3bacd.setContent(i_frame_b099dc5b68da4bcd9b558ccfd9a7c74e);
+
+
+            circle_marker_c8a49c92179648a1bbf6104f2b3f33b7.bindPopup(popup_a70911133b614d97b763d9abd6b3bacd)
+            ;
+
+
+
+
+                var feature_group_2ca42476fba24e6a87e4990512054fc9 = L.featureGroup(
+                    {}
+                ).addTo(map_bf3c2536cd904d01970ecc5d22a14b26);
+
+
+                var circle_799ba5c01f164d4ebad30fb02930f292 = L.circle(
+                    [51.41665, 21.96931],
+                    {"bubblingMouseEvents": true, "color": "gray", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 3000, "stroke": true, "weight": 2}
+                ).addTo(feature_group_2ca42476fba24e6a87e4990512054fc9);
+
+
+            var popup_379af09f55824cb1b6868854dfb40c47 = L.popup({"maxWidth": "100%"});
+
+
+                var html_30efb94fa1b04a279217ade2ceffcdcf = $(`<div id="html_30efb94fa1b04a279217ade2ceffcdcf" style="width: 100.0%; height: 100.0%;">Dostawa 20zł </div>`)[0];
+                popup_379af09f55824cb1b6868854dfb40c47.setContent(html_30efb94fa1b04a279217ade2ceffcdcf);
+
+
+            circle_799ba5c01f164d4ebad30fb02930f292.bindPopup(popup_379af09f55824cb1b6868854dfb40c47)
+            ;
+
+
+
+
+                var circle_8d05f83a6de44c59b475a8dbd5fc3d00 = L.circle(
+                    [51.41665, 21.96931],
+                    {"bubblingMouseEvents": true, "color": "gray", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2000, "stroke": true, "weight": 2}
+                ).addTo(feature_group_2ca42476fba24e6a87e4990512054fc9);
+
+
+            var popup_e96358a3469e43ad8337081f578c7edc = L.popup({"maxWidth": "100%"});
+
+
+                var html_c386f3df43d1472a96e9e77b7dab71d7 = $(`<div id="html_c386f3df43d1472a96e9e77b7dab71d7" style="width: 100.0%; height: 100.0%;">Dostawa 10zł </div>`)[0];
+                popup_e96358a3469e43ad8337081f578c7edc.setContent(html_c386f3df43d1472a96e9e77b7dab71d7);
+
+
+            circle_8d05f83a6de44c59b475a8dbd5fc3d00.bindPopup(popup_e96358a3469e43ad8337081f578c7edc)
+            ;
+
+
+
+
+                var circle_b443c6a793f342e892dc8e092fede3f1 = L.circle(
+                    [51.41665, 21.96931],
+                    {"bubblingMouseEvents": true, "color": "gray", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000, "stroke": true, "weight": 2}
+                ).addTo(feature_group_2ca42476fba24e6a87e4990512054fc9);
+
+
+            var popup_55bc2507cd0e47119fbdc23ada8fc4b5 = L.popup({"maxWidth": "100%"});
+
+
+                var html_6bcc69b8489740069eeeeec47b386471 = $(`<div id="html_6bcc69b8489740069eeeeec47b386471" style="width: 100.0%; height: 100.0%;">Dostawa darmowa</div>`)[0];
+                popup_55bc2507cd0e47119fbdc23ada8fc4b5.setContent(html_6bcc69b8489740069eeeeec47b386471);
+
+
+            circle_b443c6a793f342e892dc8e092fede3f1.bindPopup(popup_55bc2507cd0e47119fbdc23ada8fc4b5)
+            ;
+
+
+
+
+                var layer_control_f7b2e72c99a84746906069c11393a1aa = {
+                    base_layers : {
+                        "stamenterrain" : tile_layer_61d0bc5d8c494f198f776f4c25caaf60,
+                    },
+                    overlays :  {
+                        "Siedziba firmy" : feature_group_fb4cfa5883ca4496ac374e519f3cfa10,
+                        "Dostawy" : feature_group_2ca42476fba24e6a87e4990512054fc9,
+                    },
+                };
+                L.control.layers(
+                    layer_control_f7b2e72c99a84746906069c11393a1aa.base_layers,
+                    layer_control_f7b2e72c99a84746906069c11393a1aa.overlays,
+                    {"autoZIndex": true, "collapsed": true, "position": "topright"}
+                ).addTo(map_bf3c2536cd904d01970ecc5d22a14b26);
+
+    </script>
+</head>
