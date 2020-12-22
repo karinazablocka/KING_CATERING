@@ -14,6 +14,21 @@ db=SQLAlchemy(app)
 
 
 ### TWORZENIE TABEL W BAZIE DANYCH catering.db (tabela tabela_danie z daniami i cenami utworzona oddzialenie "menu_creating_db.py")
+
+##  TABELA "tabela_klient" Z DANYMI klienta Z Formularza Zamówienia ZE STRONY /Zamowienie/
+
+class Data_klient(db.Model):
+    __tablename__="tabela_klient"
+    id_zamowienie = db.Column('Id', db.Integer(), primary_key=True)
+    name_klient = db.Column('Imie i nazwisko', db.String(255), nullable=False)
+    tel_klient = db.Column('Telefon', db.Integer())
+    email_klient = db.Column('Email', db.String(255), nullable=False, unique=True)
+
+    def __init__(self, name_klient, tel_klient, email_klient  ):
+        self.name_klient=name_klient
+        self.tel_klient=tel_klient
+        self.email_klient=email_klient
+
 ##  TABELA "data" Z DANYMI Z Formularza Kontaktowego ZE STRONY /Kontakt/
 
 class Data(db.Model):
